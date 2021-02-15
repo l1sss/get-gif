@@ -1,16 +1,11 @@
 
 package com.gmail.slisenko.dm.getgif.domain;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -20,11 +15,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class GifResponse {
 
     @JsonProperty("results")
-    private List<Result> results = new ArrayList<>();
+    private List<Result> results;
     @JsonProperty("next")
     private String next;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("results")
     public List<Result> getResults() {

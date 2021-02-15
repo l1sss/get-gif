@@ -7,11 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Configuration
 public class DaoConfig {
 
     @Bean
-    public GifDaoTenor gifDaoTenor(@Value("${random.gif.url}") String url,
+    public GifDaoTenor gifDaoTenor(@Value("${tenor.gif.url}") String url,
                                    @Qualifier("restTemplate") RestTemplate rest) {
         return new GifDaoTenor(url, rest);
     }
@@ -20,4 +23,5 @@ public class DaoConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
 }
