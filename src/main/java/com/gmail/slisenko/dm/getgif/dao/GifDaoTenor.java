@@ -18,7 +18,7 @@ public class GifDaoTenor implements GifDao {
     private static final Logger LOG = LoggerFactory.getLogger(GifDaoTenor.class);
     private final String randomGifUrl;
     private final RestTemplate rest;
-    private Optional<String> pos = Optional.empty();
+    private String pos = "";
 
     public GifDaoTenor(String randomGifUrl, RestTemplate rest) {
         this.randomGifUrl = randomGifUrl;
@@ -33,22 +33,7 @@ public class GifDaoTenor implements GifDao {
     }
 
     private ResponseEntity<GifResponse> sendRequest() {
-        ResponseEntity<GifResponse> response;
-        if (pos.isPresent()) {
-            response = sendRequestWithPosition();
-        } else {
-            response = sendRequestWithoutPosition();
-        }
-        return response;
-    }
-
-    private ResponseEntity<GifResponse> sendRequestWithPosition() {
-        //noinspection OptionalGetWithoutIsPresent
-        return rest.getForEntity(randomGifUrl+pos.get(), GifResponse.class);
-    }
-
-    private ResponseEntity<GifResponse> sendRequestWithoutPosition() {
-        return rest.getForEntity(randomGifUrl, GifResponse.class);
+        return rest.getForEntity(randomGifUrl.concat(pos), GifResponse.class);
     }
 
     private void checkStatus(ResponseEntity<GifResponse> response) throws IOException {
@@ -70,8 +55,13 @@ public class GifDaoTenor implements GifDao {
             Gif gif = content.getGif();
             gifs.add(gif.getUrl());
         })));
-        pos = Optional.ofNullable(gifResponse.getNext());
+        setNextPosition(gifResponse.getNext());
         return gifs;
     }
 
+    private void setNextPosition(String next) {
+        if (next != null && !next.isEmpty()) {
+            pos = next;
+        }
+    }
 }
